@@ -1,5 +1,4 @@
 
-# Create Image class
 class Image 
   def initialize(array)
     @array = array
@@ -12,7 +11,6 @@ class Image
   end
 end
 
-# Make this work
 image = Image.new([
   [0, 0, 0, 0],
   [0, 1, 0, 0],
