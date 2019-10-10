@@ -1,4 +1,3 @@
-
 class Image 
   def initialize(array)
     @array = array
