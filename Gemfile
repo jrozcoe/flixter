@@ -69,7 +69,9 @@ gem 'bootstrap', '4.0.0.alpha6'
 gem 'carrierwave', '~> 2.0'
 gem "mini_magick"
 gem 'carrierwave-aws'
-
+gem 'stripe'
+gem 'ranked-model'
+gem 'jquery-ui-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
