@@ -1,26 +1,31 @@
-class Instructor::CoursesController < ApplicationController
+class Instructor::SectionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_authorized_for_current_course, only: [:show]
-
-  def new
-    @course = Course.new
-  end
+  before_action :require_authorized_for_current_course, only: [:create]
+  before_action :require_authorized_for_current_section, only: [:update]
 
   def create
-    @course = current_user.courses.create(course_params)
-    if @course.valid?
-      redirect_to instructor_course_path(@course)
-    else
-      render :new, status: :unprocessable_entity
-    end
+    @section = current_course.sections.create(section_params)
+    redirect_to instructor_course_path(current_course)
   end
 
-  def show
-    @section = Section.new
-    @lesson = Lesson.new
+  def update
+    current_section.update_attributes(section_params)
+    render plain: 'ok!'
   end
 
   private
+
+  def require_authorized_for_current_section
+    if current_section.course.user != current_user
+      render plain: "Unauthorized", status: :unauthorized
+    end
+  end
+
+  def current_section
+    @current_section ||= Section.find(params[:id])
+  end
+
+
   def require_authorized_for_current_course
     if current_course.user != current_user
       render plain: "Unauthorized", status: :unauthorized
@@ -29,10 +34,10 @@ class Instructor::CoursesController < ApplicationController
 
   helper_method :current_course
   def current_course
-    @current_course ||= Course.find(params[:id])
+    @current_course ||= Course.find(params[:course_id])
   end
 
-  def course_params
-    params.require(:course).permit(:title, :description, :cost, :image)
+  def section_params
+    params.require(:section).permit(:title, :row_order_position)
   end
 end
